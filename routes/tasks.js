@@ -1,5 +1,7 @@
 import express from "express";
+import {scheduleRecurringTasks} from "../schedules.js"
 const tasksRouter = express.Router();
+
 
 //import functions from models:
 import {
@@ -9,6 +11,11 @@ import {
     updateTaskById,
     deleteTaskById,
 } from "../models/tasks.js"
+
+// const createAndSchedule = (taskData) => {
+//     const createdTask = await createTask(taskData);
+//     scheduleRecurringTasks(createdTask);
+// }
 
 
 //get all tasks
@@ -37,9 +44,12 @@ tasksRouter.get("/:id", async function (req, res, next){
 
 //create a task
 tasksRouter.post("/", async function (req, res, next){
+   
     try {
         const result = await createTask(req.body);
         res.json({ success: true, payload: result });
+        scheduleRecurringTasks()
+
     } catch (err) {
         next(err);
     }

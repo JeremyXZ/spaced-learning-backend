@@ -17,10 +17,10 @@ export async function getTaskById(id){
 
 
 export async function createTask(tks) {
-    const { subject, date, task, duration, difficulty, resources } = tks;
+    const { subject, date, task, word_count, difficulty, resources } = tks;
     const newTask = await query(
-      "INSERT INTO tasks (subject, date, task, duration, difficulty, resources) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [subject, date, task, duration, difficulty, resources]
+      "INSERT INTO tasks (subject, date, task, word_count, difficulty, resources) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      [subject, date, task, word_count, difficulty, resources]
     );
     return newTask.rows;
   }
@@ -29,7 +29,7 @@ export async function createTask(tks) {
 // Update question by id
 
  export async function updateTaskById (id,updatedTask) {
-    const update = await query  ('UPDATE tasks SET subject=$1, date=$2, task=$3, duration=$4, difficulty=$5, resources=$6 WHERE id = $7', [updatedTask.subject, updatedTask.tasks, updatedTask.task, updatedTask.duration, updatedTask.difficulty, updatedTask.resources, id]);
+    const update = await query  ('UPDATE tasks SET subject=$1, date=$2, task=$3, word_count=$4, difficulty=$5, resources=$6 WHERE id = $7', [updatedTask.subject, updatedTask.tasks, updatedTask.task, updatedTask.word_count, updatedTask.difficulty, updatedTask.resources, id]);
     return update.rows
 }
 
