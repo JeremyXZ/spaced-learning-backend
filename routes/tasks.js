@@ -1,5 +1,5 @@
 import express from "express";
-import {scheduleRecurringTasks} from "../schedules.js"
+import { setRevisionDates } from "../schedules.js"
 const tasksRouter = express.Router();
 
 
@@ -42,18 +42,28 @@ tasksRouter.get("/:id", async function (req, res, next){
     }
 });
 
-//create a task
-tasksRouter.post("/", async function (req, res, next){
-   
-    try {
-        const result = await createTask(req.body);
-        res.json({ success: true, payload: result });
-        scheduleRecurringTasks()
+//create a task and and generate rev_days add them into the database
 
+tasksRouter.post("/", async function (req, res, next){
+    try {
+      const { subject, date, task, word_count, difficulty, resources } = req.body;
+      const reviseDates = await setRevisionDates();
+      const newTask = await createTask({ 
+        subject,
+        date,
+        task,
+        word_count,
+        difficulty, 
+        resources,
+        rev_day: reviseDates
+     })
+      res.json({ success: true, payload: newTask });
+      
     } catch (err) {
-        next(err);
+      next(err);
     }
-});
+  });
+
 
 //update a task
 tasksRouter.patch("/:id", async function (req, res, next){

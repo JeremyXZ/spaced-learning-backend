@@ -13,17 +13,26 @@ export async function getTaskById(id){
     return tasksByID.rows[0]
 }
 
+//get tasks by rev_day
+export async function getTasksByRevDay(currentDate, limit) {
+   
+  const tasks = await query('SELECT * FROM tasks WHERE $1 = ANY (rev_day) LIMIT $2', [currentDate, limit]);
+
+  return tasks || [];
+}
+
  // create task
 
-
 export async function createTask(tks) {
-    const { subject, date, task, word_count, difficulty, resources } = tks;
-    const newTask = await query(
-      "INSERT INTO tasks (subject, date, task, word_count, difficulty, resources) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [subject, date, task, word_count, difficulty, resources]
-    );
-    return newTask.rows;
-  }
+  const { subject, date, task, word_count, difficulty, resources, rev_day } = tks;
+  
+  const newTask = await query(
+    "INSERT INTO tasks (subject, date, task, word_count, difficulty, resources, rev_day) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+    [subject, date, task, word_count, difficulty, resources, rev_day]
+  );
+  return newTask.rows[0];
+}
+
 
 
 // Update question by id
