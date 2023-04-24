@@ -16,7 +16,7 @@ app.listen(PORT, function () {
       
       try {
         const currentDate = moment().format("YYYY-MM-DD");         
-        const revisedTasksObj = await getTasksByRevDay(currentDate, 10);
+        const revisedTasksObj = await getTasksByRevDay(currentDate, 2);
         const revisedTaskArr = revisedTasksObj.rows
        
         console.log(revisedTaskArr)

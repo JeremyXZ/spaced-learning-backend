@@ -7,6 +7,7 @@ const tasksRouter = express.Router();
 import {
     getAllTasks,
     getTaskById,
+    getTasksByRevDay,
     createTask,
     updateTaskById,
     deleteTaskById,
@@ -23,6 +24,20 @@ tasksRouter.get("/", async function (req, res, next) {
     try {
         const result = await getAllTasks();
         res.json({ success: true, payload: result });
+    } catch (err) {
+        next(err);
+    }
+});
+
+//get tasks by rev_day
+tasksRouter.get("/:rev_day", async function (req, res, next){
+    try {
+        const result = await getTasksByRevDay(req.params.rev_day, 2);
+        if (result.length > 0) {
+            res.json({ success: true, payload: result });
+        } else {
+            res.status(404).json({ success: false, message: "Task not found" });
+        }
     } catch (err) {
         next(err);
     }
@@ -46,16 +61,17 @@ tasksRouter.get("/:id", async function (req, res, next){
 
 tasksRouter.post("/", async function (req, res, next){
     try {
-      const { subject, date, task, word_count, difficulty, resources } = req.body;
+      const {userInput, questions} = req.body
+      const { subject, task, word_count, difficulty, resources, topic } = userInput;
       const reviseDates = await setRevisionDates();
       const newTask = await createTask({ 
         subject,
-        date,
         task,
         word_count,
         difficulty, 
-        resources,
-        rev_day: reviseDates
+        resources: questions,
+        rev_day: reviseDates,
+        topic
      })
       res.json({ success: true, payload: newTask });
       
@@ -63,7 +79,7 @@ tasksRouter.post("/", async function (req, res, next){
       next(err);
     }
   });
-
+ 
 
 //update a task
 tasksRouter.patch("/:id", async function (req, res, next){
