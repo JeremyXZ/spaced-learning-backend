@@ -11,15 +11,16 @@ app.listen(PORT, function () {
     
     console.log("Starting cron job...");
 
-    //check for tasks with rev_day equal to currentDate at midnight every day
-    cron.schedule("34 * * * *", async () => {
+    // check for tasks with rev_day equal to currentDate at 18:30 every day
+    cron.schedule("54 * * * *", async () => {
       
       try {
-        const currentDate = moment().format("YYYY-MM-DD");         
-        const revisedTasksObj = await getTasksByRevDay(currentDate, 2);
+        // const currentDate = moment().format("YYYY-MM-DD");  
+        const currentDate = "2023-04-28"       
+        const revisedTasksObj = await getTasksByRevDay(currentDate, 5);
         const revisedTaskArr = revisedTasksObj.rows
        
-        console.log(revisedTaskArr)
+        
 
         console.log(`Found ${revisedTaskArr.length} tasks to revise on ${currentDate}`);
       } catch (err) {

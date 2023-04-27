@@ -14,9 +14,9 @@ export async function getTaskById(id){
 }
 
 //get tasks by rev_day
-export async function getTasksByRevDay(currentDate, limit) {
+export async function getTasksByRevDay(day, limit) {
    
-  const tasks = await query('SELECT * FROM tasks WHERE $1 = ANY (rev_day) LIMIT $2', [currentDate, limit]);
+  const tasks = await query('SELECT * FROM tasks WHERE $1 = ANY (rev_day) LIMIT $2', [day, limit]);
 
   return tasks || [];
 }
@@ -35,10 +35,10 @@ export async function createTask(tks) {
 
 
 
-// Update question by id
+// Update tasks by id
 
  export async function updateTaskById (id,updatedTask) {
-    const update = await query  ('UPDATE tasks SET subject=$1, date=$2, task=$3, word_count=$4, difficulty=$5, resources=$6 WHERE id = $7', [updatedTask.subject, updatedTask.tasks, updatedTask.task, updatedTask.word_count, updatedTask.difficulty, updatedTask.resources, id]);
+    const update = await query  ('UPDATE tasks SET subject=$1, task=$2, word_count=$3, difficulty=$4, resources=$5 topic=$6 WHERE id = $7', [updatedTask.subject, updatedTask.task, updatedTask.word_count, updatedTask.difficulty, updatedTask.resources, updatedTask.topic]);
     return update.rows
 }
 
