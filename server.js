@@ -12,7 +12,7 @@ app.listen(PORT, function () {
     console.log("Starting cron job...");
 
     // check for tasks with rev_day equal to currentDate at 18:30 every day
-    cron.schedule("54 * * * *", async () => {
+    cron.schedule("30 11 * * *", async () => {
       
       try {
         // const currentDate = moment().format("YYYY-MM-DD");  

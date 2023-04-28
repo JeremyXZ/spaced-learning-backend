@@ -26,26 +26,12 @@ tasksRouter.get("/", async function (req, res, next) {
 
 //get tasks by rev_day
 tasksRouter.get("/rev_day/:rev_day", async function (req, res, next){
-    
-    // try {
-    //     const  = await getTasksByRevDay(req.params.rev_day, 5);
-    //     console.log("get tasks by rev_day new", result)
-    //     if (result.length > 0) {
-    //         res.json({ success: true, payload: result });
-    //     } else {
-    //         res.status(404).json({ success: false, message: "Task not found" });
-    //     }
-    // } catch (err) {
-    //     next(err);
-    // }
-
+   
     try {
-        // const currentDate = moment().format("YYYY-MM-DD"); 
         const currentDate = req.params.rev_day
         const revisedTasksObj = await getTasksByRevDay(currentDate, 5)
         const revisedTaskArr = revisedTasksObj.rows;
-        console.log("hi there", revisedTaskArr)
-
+        
             if(revisedTaskArr.length> 0) {
                 console.log(revisedTaskArr)
                 res.json({ success: true, payload: revisedTaskArr});
@@ -57,40 +43,7 @@ tasksRouter.get("/rev_day/:rev_day", async function (req, res, next){
         }   
     
 });
-
-//get tasks by due rev_day
-
-// tasksRouter.get("/due", async function (req, res, next) {   
-    
-    // try {
-    //     const currentDate = moment().format("YYYY-MM-DD"); 
-    //     const revisedTasksObj = await getTasksByRevDay(currentDate, 5)
-    //     const revisedTaskArr = revisedTasksObj.rows;
-    //     console.log(revisedTaskArr)
-
-    //         if(revisedTaskArr.length> 0) {
-    //             console.log(revisedTaskArr)
-    //             res.json({ success: true, payload: revisedTaskArr});
-    //         } else {
-    //             res.status(404).json({ success: false, message: "Task not found" });
-    //         }
-    //     } catch(err) {
-    //         next(err)
-    //     }   
-    
-    // try {
-    //     const currentDate = moment().format("YYYY-MM-DD");         
-    //     const revisedTasksObj = await getTasksByRevDay(currentDate, 5);
-    //     const revisedTaskArr = revisedTasksObj.rows
-       
-    //     console.log(revisedTaskArr)
-
-    //     console.log(`Found ${revisedTaskArr.length} tasks to revise on ${currentDate}`);
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-        
-    // })       
+   
     
     tasksRouter.get("/due", (req, res) => {
         res.send("Connected to tasks due endpoint.");
