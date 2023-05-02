@@ -26,12 +26,11 @@ export async function getTasksByRevDay(day, limit) {
 // create task
 
 export async function createTask(tks) {
-  const { subject, task, word_count, difficulty, resources, rev_day, topic } =
-    tks;
+  const { subject, task, difficulty, resources, rev_day, topic } = tks;
 
   const newTask = await query(
-    "INSERT INTO tasks (subject, task, word_count, difficulty, resources, rev_day, topic) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-    [subject, task, word_count, difficulty, resources, rev_day, topic]
+    "INSERT INTO tasks (subject, task, difficulty, resources, rev_day, topic) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+    [subject, task, difficulty, resources, rev_day, topic]
   );
   return newTask.rows[0];
 }
@@ -40,11 +39,10 @@ export async function createTask(tks) {
 
 export async function updateTaskById(id, updatedTask) {
   const update = await query(
-    "UPDATE tasks SET subject=$1, task=$2, word_count=$3, difficulty=$4, resources=$5 topic=$6 WHERE id = $7",
+    "UPDATE tasks SET subject=$1, task=$2, difficulty=$3, resources=$4 topic=$5 WHERE id = $6",
     [
       updatedTask.subject,
       updatedTask.task,
-      updatedTask.word_count,
       updatedTask.difficulty,
       updatedTask.resources,
       updatedTask.topic,

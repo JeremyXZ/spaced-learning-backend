@@ -58,12 +58,11 @@ tasksRouter.get("/:id", async function (req, res, next) {
 tasksRouter.post("/", async function (req, res, next) {
   try {
     const { dbInput, questions } = req.body;
-    const { subject, task, word_count, difficulty, topic } = dbInput;
+    const { subject, task, difficulty, topic } = dbInput;
     const reviseDates = await setRevisionDates();
     const newTask = await createTask({
       subject,
       task,
-      word_count,
       difficulty,
       resources: questions,
       rev_day: reviseDates,
