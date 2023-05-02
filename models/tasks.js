@@ -16,7 +16,7 @@ export async function getTaskById(id) {
 //get tasks by rev_day
 export async function getTasksByRevDay(day, limit) {
   const tasks = await query(
-    "SELECT * FROM tasks WHERE $1 = ANY (rev_day) ORDER BY subject ASC  LIMIT $2",
+    "SELECT * FROM tasks WHERE $1 = ANY (rev_day) ORDER BY difficulty DESC  LIMIT $2",
     [day, limit]
   );
 
