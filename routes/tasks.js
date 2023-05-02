@@ -1,6 +1,5 @@
 import express from "express";
 import { setRevisionDates } from "../schedules.js";
-import moment from "moment";
 const tasksRouter = express.Router();
 
 //import functions from models:
@@ -27,11 +26,10 @@ tasksRouter.get("/", async function (req, res, next) {
 tasksRouter.get("/rev_day/:rev_day", async function (req, res, next) {
   try {
     const currentDate = req.params.rev_day;
-    const revisedTasksObj = await getTasksByRevDay(currentDate, 5);
+    const revisedTasksObj = await getTasksByRevDay(currentDate, 10);
     const revisedTaskArr = revisedTasksObj.rows;
 
     if (revisedTaskArr.length > 0) {
-      console.log(revisedTaskArr);
       res.json({ success: true, payload: revisedTaskArr });
     } else {
       res.status(404).json({ success: false, message: "Task not found" });
@@ -39,10 +37,6 @@ tasksRouter.get("/rev_day/:rev_day", async function (req, res, next) {
   } catch (err) {
     next(err);
   }
-});
-
-tasksRouter.get("/due", (req, res) => {
-  res.send("Connected to tasks due endpoint.");
 });
 
 //get a task by id
@@ -75,7 +69,7 @@ tasksRouter.post("/", async function (req, res, next) {
       rev_day: reviseDates,
       topic,
     });
-    console.log("post router userInput", dbInput);
+
     res.json({ success: true, payload: newTask });
   } catch (err) {
     next(err);
@@ -112,7 +106,6 @@ tasksRouter.delete("/:id", async function (req, res, next) {
 
 //error handling middleware
 tasksRouter.use(function (err, req, res, next) {
-  console.error(err.stack);
   res.status(500).json({ success: false, message: "Internal server error" });
 });
 

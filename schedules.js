@@ -1,13 +1,12 @@
-import moment from 'moment';
+import moment from "moment";
 
 const setRevisionDates = async () => {
   const revisionDays = [1, 7, 16, 35];
   const reviseDates = revisionDays.map((day) =>
     moment().add(day, "days").format("YYYY-MM-DD")
   );
-  console.log(reviseDates); 
+  console.log(reviseDates);
   return reviseDates;
 };
 
-
-export { setRevisionDates }
+export { setRevisionDates };
